@@ -2,7 +2,7 @@ const {test,expect} = require('@playwright/test')
 const {sideBarMenus} = require('../../fixture/sidebarMenus');
 const Login = require('../../pages/Login/Login')
 const loginCredentials = require('../../fixture/loginCredentials.json')
-
+const sidebarContent = require('../../pages/SideBar/SideBar');
 
 let loginPage;
 test.beforeEach(async({page})=>{
@@ -18,4 +18,8 @@ test('Sidebar Visibility Test',async({page})=>{
     for(const menuText of sidebar){
         await expect(page.getByText(menuText).nth(0)).toBeVisible();
     }
+})
+
+test('Manual Visibility Test of sidebar content', async({page})=>{
+
 })
