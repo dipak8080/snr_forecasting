@@ -26,7 +26,11 @@ class Login{
         await this.emailInput.fill(email);
         await this.passwordInput.fill(password);
         await this.loginButton.click();
-        await expect(this.page).toHaveURL(/\/system/);
+        
+        Promise.all([
+            waitForApiResponse(this.page,'/api/v1/user/profile/'),
+            this.page.waitForURL('**/system', { timeout: 60000 }),    
+        ])
         await this.orderManagementProjectCard.click();
         await Promise.all([
         

@@ -22,6 +22,7 @@ class SideBar{
         await this.forecastMenu.click();
     }
 
+
     async clickFulfillmentmenu(){
         await this.fulfillmentMenu.click();
     }
@@ -31,7 +32,7 @@ class SideBar{
     }
 
     async clickAutoPOMenu(){
-        await this.allocationMenu.click();
+        await this.autoPOMenu.click();
     }
 
     async clickAllocationMenu(){

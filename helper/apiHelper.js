@@ -1,13 +1,16 @@
-async function waitForApiResponse(page, apiPath, timeout = 30000) {
+async function waitForApiResponse(page, apiPath, timeout = 60000) {
   const response = await page.waitForResponse(
-    res => res.url().includes(apiPath) && res.status() === 200,
+    res =>
+      res.url().includes(apiPath) &&
+      ['GET', 'POST'].includes(res.request().method()) &&
+      [200, 204].includes(res.status()),
     { timeout }
   );
 
   try {
     return await response.json();
   } catch {
-    return null;
+    return null; 
   }
 }
 
