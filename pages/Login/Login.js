@@ -34,7 +34,7 @@ class Login{
         await this.orderManagementProjectCard.click();
         await Promise.all([
         
-        waitForApiResponse(this.page,'https://api.wms.snr.dalfin.ai'),  
+        waitForApiResponse(this.page,'/api/v1/dashboards/'),  
         expect(this.dashboardHeader).toBeVisible(),
         ])
 

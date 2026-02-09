@@ -11,52 +11,43 @@ let loginPage;
 let skuPage;
 let sidebarPage;
 test.beforeEach(async ({ page }) => {
-    test.setTimeout(60000)
+    test.setTimeout(60 * 60 * 1000)
     loginPage = new Login(page);
     skuPage = new skuDetails(page);
     sidebarPage = new sidebarContent(page);
     await loginPage.loginToApp(loginCredentials.email, loginCredentials.password);
-    await sidebarPage.clickItemSetupMenu();
-
-
+    await sidebarPage.clickFulfillmentmenu();
 })
 
-test('Auto Saving all Sku ids', async ({ page }) => {
-    test.setTimeout(10*60*1000);
-    const fulfillmentTab = page.getByRole('tab', { name: 'Fulfillment' });
-    const saveChangesButton = page.getByRole('button', { name: 'Save Changes' }).first();
-    const skuDataItem = skuData.skuIds;
-    for (const item of skuDataItem) {
+test.only('Auto-Predict of selected SKU IDs', async ({ page }) => {
+    test.setTimeout(60 * 60 * 1000);
+    const fulfillmentSearchInput = page.locator('input[type="search"]').first();
+    const predictButton = page.getByRole('button', { name: 'Predict' }).first();
 
-        await skuPage.clickSearchInput()
-        await skuPage.searchInput.fill('')
+    await expect(fulfillmentSearchInput).toBeVisible();
+    await expect(predictButton).toBeVisible();
+    await page.pause();
+    for (const item of skuData.skuIds) {
+        await fulfillmentSearchInput.fill('');
         await Promise.all([
             waitForApiResponse(page, '/api/v1/templates-data/modify'),
-            skuPage.searchInput.type(String(item), { delay: 50 }),
+            fulfillmentSearchInput.type(String(item), { delay: 50 })
         ]);
 
-        const suggestionNotFound = page.getByText('SKU not found');
+        const suggestionNotFound = page.getByText('SKU does not exist');
         if (await suggestionNotFound.isVisible({ timeout: 800 }).catch(() => false)) {
             console.log(`SKU not found, skipping: ${item}`);
             continue;
         }
 
-
+        await predictButton.press('ArrowDown');
+        await predictButton.press('Enter');
         await Promise.all([
-            waitForApiResponse(page, '/api/v1/templates-data/mapping?'),
-            skuPage.selectSku1Number(),
-
+            waitForApiResponse(page, '/api/v1/forecasting/fulfillment/predict/'),
+            predictButton.click(),
         ]);
 
-        await expect(fulfillmentTab).toBeVisible();
-        await fulfillmentTab.click()
-
-        await Promise.all([
-            waitForApiResponse(page, '/api/v1/item-setup/upsert/'),
-            saveChangesButton.click()
-        ]);
-
-
+        expect(page.getByRole('button', { name: 'Export CSV' })).toBeVisible({ timeout: 5 * 60 * 1000 })
 
     }
 

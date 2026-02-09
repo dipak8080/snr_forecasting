@@ -7,7 +7,7 @@ class Sku {
         this.editButton = page.getByRole('button', { name: 'Edit' });
 
         //SKU Details Section
-        this.skuDescriptionHeading = page.getByRole('heading', { name: 'description' });
+        this.skuDescriptionHeading = page.locator('.SkuInformation__ProductTitle-sc-3a19f28f-16.jpUFLi');
 
         this.caseBarCodeToggle = page.locator('input[type="checkbox"]');
         this.upcNumber = page.locator('.info-content', { hasText: 'UPC' })

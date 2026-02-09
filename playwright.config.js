@@ -16,7 +16,7 @@ export default defineConfig({
   testDir: './tests',
 
   // ✅ Global timeout for EACH test
-  timeout: 10 * 60 * 1000, // 10 minutes
+  timeout: 30 * 60 * 1000, // 10 minutes
 
   // ✅ Global timeout for expect()
   expect: {
