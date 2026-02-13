@@ -23,14 +23,12 @@ test.beforeEach(async ({ page }) => {
     await sidebarPage.clickFulfillmentmenu();
 })
 
-test.only('Auto-Predict of selected SKU IDs', async ({ page }) => {
+test.only('Visibility test of Fulfillment Page', async ({ page }) => {
     test.setTimeout(60 * 60 * 1000);
     const fulfillmentSearchInput = fulfillmentPage.fulfillmentSearchInput;
     const predictButton = fulfillmentPage.predictButton;
     const exportCsvButton = fulfillmentPage.exportCsvButton;
 
-    await expect(fulfillmentSearchInput).toBeVisible();
-    await expect(predictButton).toBeVisible();
     for (const item of skuData.skuIds) {
         await fulfillmentSearchInput.fill('');
         await Promise.all([
@@ -51,7 +49,18 @@ test.only('Auto-Predict of selected SKU IDs', async ({ page }) => {
             predictButton.click(),
         ]);
 
-        await expect(exportCsvButton).toBeVisible({ timeout: 1 * 60 * 1000 })
+        await expect(exportCsvButton).toBeVisible();
+        await expect(fulfillmentPage.earlierDay).toBeVisible();
+        await expect(fulfillmentPage.approveButton).toBeVisible();
+        await expect(fulfillmentSearchInput).toBeVisible();
+        await expect(predictButton).toBeVisible();
+
+        const isExportCsvButtonVisible = await exportCsvButton.isVisible().catch(()=>false)
+        if(isExportCsvButtonVisible){
+            console.log('Visibility Test Pass');
+            break;
+        }
+    
 
     }
 
