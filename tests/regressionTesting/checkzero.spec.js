@@ -46,6 +46,8 @@ test.only('Auto Check Zero', async ({ page }) => {
       console.log(`[QA] SKU not found, skipping: ${item}`);
       continue;
     }
+    await fulfillmentSearchInput.press('ArrowDown');
+    await fulfillmentSearchInput.press('Enter');
 
     await Promise.all([
       waitForApiResponse(page, '/api/v1/forecasting/fulfillment/predict/'),

@@ -2,7 +2,7 @@ class SideBar{
     constructor(page){
         this.page = page;
         this.itemSetupMenu = page.getByText('Item Setup').nth(0);
-        this.forecastMenu = page.getByText('Forecast').nth(0);
+        this.forecastMenu = page.locator('.ant-menu-title-content',{hasText:'Forecast'})
         this.fulfillmentMenu = page.getByText('Fulfillment').nth(0);
         this.purchaseOrderMenu = page.getByText('Purchase Orders').nth(0);
         this.autoPOMenu = page.getByText('Auto PO').nth(0);
@@ -24,7 +24,7 @@ class SideBar{
 
 
     async clickFulfillmentmenu(){
-        await this.fulfillmentMenu.click();
+        await this.fulfillmentMenu.click({ timeout: 60000 }); 
     }
 
     async clickPurchaseOrderMenu(){

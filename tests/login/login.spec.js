@@ -15,3 +15,4 @@ test('Visibility Test',async({page})=>{
     await expect(loginPage.loginButton).toBeVisible();
     await page.pause();
 })
+

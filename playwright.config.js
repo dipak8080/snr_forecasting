@@ -16,7 +16,7 @@ export default defineConfig({
   testDir: './tests',
 
   // ✅ Global timeout for EACH test
-  timeout: 30 * 60 * 1000, // 10 minutes
+  timeout: 30 * 60 * 1000, // 30 minutes
 
   // ✅ Global timeout for expect()
   expect: {
@@ -38,7 +38,7 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
 
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  /* Shared settings for all the projects below. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     baseURL: process.env.BASE_URL,
@@ -49,46 +49,33 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. */
     trace: 'on-first-retry',
 
-    // Optional but helpful in debugging:
+    // Optional:
     // screenshot: 'only-on-failure',
     // video: 'retain-on-failure',
   },
 
-  /* Configure projects for major browsers */
+  /* Configure projects for browsers */
   projects: [
+    // Playwright bundled Chromium (fast, good default)
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
 
+    // ✅ Real Google Chrome installed on your Mac
+    {
+      name: 'chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    },
+
+    // Optional browsers:
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
     // },
-
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
-    // },
-
-    // Mobile:
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    // Branded browsers:
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
 
