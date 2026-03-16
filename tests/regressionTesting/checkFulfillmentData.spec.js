@@ -29,7 +29,7 @@ test.only('Verify Sys Sug Ord should be equal or greater than min ord quantity',
     const approveButton = fulfillmentPage.approveButton;
 
     for (const item of skuData.skuIds) {
-        await fulfillmentPage.enterFulfillmentSku('');
+        await fulfillmentPage.enterFulfillmentSku('');``
         await Promise.all([
             waitForApiResponse(page, '/api/v1/templates-data/modify/'),
             fulfillmentPage.fulfillmentSearchInput.fill(String(item), { delay: 50 }),

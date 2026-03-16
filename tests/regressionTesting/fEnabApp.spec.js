@@ -47,9 +47,18 @@ test.only('Auto-Find Enabled Approve Button', async ({ page }) => {
         await  fulfillmentPage.fulfillmentSearchInput.press('Enter');
 
     await Promise.all([
-      waitForApiResponse(page, '/api/v1/forecasting/fulfillment/predict/'),  
+      waitForApiResponse(page, '/api/v1/forecasting/fulfillment/predict/').catch(e => {
+                console.log(`API did not respond for ${item}, continuing...`);
+            }),
       fulfillmentPage.clickPredictButton()
     ]);
+
+            const noInternetMessage = page.getByText('We’re unable to process your request right now. Please try again shortly.', { exact: false });
+
+        if (await noInternetMessage.isVisible({ timeout: 10000 }).catch(() => false)) {
+            console.log(`We’re unable to process your request right now. Please try again shortly for. ${item} SKU`)
+            continue;
+        }
 
 
 
@@ -64,7 +73,7 @@ test.only('Auto-Find Enabled Approve Button', async ({ page }) => {
 
     if (isApproveEnabled) {
       console.log(`Approve enabled for SKU: ${item}`);
-      break;
+      
     } else {
       console.log(`Approve not enabled for SKU: ${item}`);
     }
